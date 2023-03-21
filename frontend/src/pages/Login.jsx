@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import axios from 'axios';
 
 // register component.
 export default function Login() {
@@ -9,8 +10,18 @@ export default function Login() {
 	const [password, setPassword] = useState("");
 
 	// on submit data
-	function handleSubmit(e) {
+	async function handleSubmit(e) {
 		e.preventDefault();
+		try {
+			const response = await axios.post('http://localhost:7070/login', { email, password });
+			if(response.status === 200) {
+				alert('User Logged in')
+			} else {
+				alert('User not logged in')
+			}
+		} catch (error) {
+			console.log(error.message)
+		}
 	}
 
 	// return component elemts
