@@ -7,8 +7,11 @@ const { register } = require('../controllers/user.controller');
 // route setup
 const router = express.Router();
 
-// get route
+// register (post) route
 router.post('/register', register);
+
+// login (post) route
+router.post('/login', register);
 
 // exporting route
 module.exports = router;
