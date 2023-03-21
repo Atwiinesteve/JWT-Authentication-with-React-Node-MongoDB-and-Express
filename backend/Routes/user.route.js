@@ -1,17 +1,17 @@
 // importing modules
-const express = require('express');
+const express = require("express");
 
 // importing controller functions
-const { register } = require('../controllers/user.controller');
+const { register, login } = require("../controllers/user.controller");
 
 // route setup
 const router = express.Router();
 
 // register (post) route
-router.post('/register', register);
+router.post("/register", register);
 
 // login (post) route
-router.post('/login', register);
+router.post("/login", login);
 
 // exporting route
 module.exports = router;
