@@ -39,7 +39,7 @@ export default function Register() {
 					<button type="submit">Register</button>
 					<span>
 						<p>
-							Already have an account? <Link to={"/login"}>Login</Link>
+							Already have an account? <Link to={"/login"}>Login</Link> here
 						</p>
 					</span>
 				</form>
