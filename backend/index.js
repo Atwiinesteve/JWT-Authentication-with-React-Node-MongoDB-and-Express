@@ -24,6 +24,9 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// routes
+app.use('/', require('./Routes/user.route'));
+
 // server initialization
 app.listen(PORT, function() {
     console.log(`Server Listening on http://localhost:${PORT}`);
