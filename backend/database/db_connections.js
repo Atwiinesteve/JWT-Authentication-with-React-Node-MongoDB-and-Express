@@ -8,5 +8,6 @@ const connect = mongoose.connect(process.env.DATABASE_URL, {}).then((response) =
     }
 }).catch((error) => {
     console.log(`Database Connection Failed: ${error.message}`)
-})
+});
+
 module.exports = connect;
