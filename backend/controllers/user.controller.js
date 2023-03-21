@@ -59,10 +59,10 @@ const login = async (request, response) => {
             if(validPassword) {
                 const maxAge = 1*24*60*60;
                 const token = jwt.sign({ id: user._id }, process.env.SECRET_TOKEN, { expiresIn: '1h'});
-                response.cookie('token', token, { httpOnly: false, maxAge: maxAge*1000 });
-                response.status(200).json({ message: `User Logged In Successfully..` })
+                response.cookie('token', token, { withCredentials: true, httpOnly: false, maxAge: maxAge*1000 });
+                response.status(200).json({ message: `user: ${user._id}` })
             } else {
-                return response.status(400).json({ message: `Invalid Email/Password..`})
+                return response.status(400).json({ message: `Invalid Email/Password..`});
             }
         }
 	} catch (error) {
