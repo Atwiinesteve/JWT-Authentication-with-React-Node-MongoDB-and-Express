@@ -21,6 +21,7 @@ app.use(cors(corsOptions));
 // other middlewares
 app.use(express.json());
 app.use(bodyParser.json());
+app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // server initialization
