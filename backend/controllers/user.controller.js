@@ -5,6 +5,21 @@ const jwt = require("jsonwebtoken");
 // import user model
 const User = require("../models/user.model");
 
+// handling errors
+const handleErrors = (err) => {
+	let errors = { email: "", password: "" };
+	if(err.code === 11000) {
+		errors.email = "Email is already registered..";
+		return errors;
+	};
+	if(err.message.includes("Users validation failed")) {
+		Object.values(err.errors).forEach(({ properties }) => {
+			errors[properties.path] = properties.message;
+		})
+	};
+	return errors;
+};
+
 // register controller
 const register = async (request, response) => {
 	try {
@@ -29,6 +44,8 @@ const register = async (request, response) => {
 						message: error.message,
 						stack: error.stack,
 					});
+					const errors = handleErrors(error);
+					response.json({ errors })
 					return response
 						.status(500)
 						.json({
