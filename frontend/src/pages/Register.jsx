@@ -10,18 +10,51 @@ export default function Register() {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 
+	// success message
+	const successMessage = () => {
+		toast.success("User Successfully registered..", {
+			position: toast.POSITION.TOP_RIGHT
+		});
+	};
+
+	// user not registered/already registered message
+	const userAlreadyRegistered = () => {
+		toast.warning("User Already Registered", {
+			position: toast.POSITION.TOP_RIGHT
+		});
+	};
+
+	// server under maintenance mode message
+	const serverUnderMaintenace = () => {
+		toast.info("Server Shutdown, Please try again later..", {
+			position: toast.POSITION.TOP_RIGHT
+		});
+	};
+
+	// missing input
+	const missingInput = (err) => {
+		toast.error(err, {
+			position: toast.POSITION.TOP_RIGHT
+		})
+	}
+
   // on submit data
   async function handleSubmit(e) {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:7070/register', { email, password });
-      if(response.status === 200 ) {
-        alert('User Successfully registered..')
-      } else {
-        alert('Problem trying to register user. Please try again later..')
-      }
+		await axios.post('http://localhost:7070/register', { email, password })
+		.then((response) => {
+			if(response.status === 200) {
+				successMessage();
+			}
+		})
+    	.catch((error) => {
+			if(error.response.data) {
+				missingInput();
+			}
+		})
     } catch (error) {
-      console.log(error.message)
+		missingInput();
     }
   }
 

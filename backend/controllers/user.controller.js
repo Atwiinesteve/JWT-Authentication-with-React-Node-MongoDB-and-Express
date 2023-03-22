@@ -8,6 +8,13 @@ const User = require("../models/user.model");
 // handling errors
 const handleErrors = (err) => {
 	let errors = { email: "", password: "" };
+	if (err.message === "incorrect email") {
+		errors.email = "That email is not registered";
+	}
+
+	if (err.message === "incorrect password") {
+		errors.password = "That password is incorrect";
+	}
 	if(err.code === 11000) {
 		errors.email = "Email is already registered..";
 		return errors;
@@ -33,7 +40,7 @@ const register = async (request, response) => {
 				email: request.body.email,
 				password: hash,
 			});
-			user
+			return user
 				.save()
 				.then((user) => {
 					response.json({ message: user });
@@ -44,8 +51,6 @@ const register = async (request, response) => {
 						message: error.message,
 						stack: error.stack,
 					});
-					const errors = handleErrors(error);
-					response.json({ errors })
 					return response
 						.status(500)
 						.json({
@@ -59,9 +64,8 @@ const register = async (request, response) => {
 			message: error.message,
 			stack: error.stack,
 		});
-		return response
-			.status(500)
-			.json({ message: `Server Under Maintenance. Please try again later..` });
+		const errors = handleErrors(error);
+		return response.json({ errors });
 	}
 };
 
@@ -83,14 +87,8 @@ const login = async (request, response) => {
             }
         }
 	} catch (error) {
-		console.log({
-			name: error.name,
-			message: error.message,
-			stack: error.stack,
-		});
-		return response
-			.status(500)
-			.json({ message: `Server Under Maintenance. Please try again later..` });
+		const errors = handleErrors(error);
+		return response.json({ errors });
 	}
 };
 
