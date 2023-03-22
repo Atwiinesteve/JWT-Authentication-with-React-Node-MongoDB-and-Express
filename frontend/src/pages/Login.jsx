@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
-import axios from 'axios';
+// import axios from 'axios';
 
 // register component.
 export default function Login() {
@@ -9,18 +9,51 @@ export default function Login() {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 
+	// missing input
+	const missingInput = () => {
+		toast.error('Login Failed. Please use correct details', {
+			position: toast.POSITION.TOP_RIGHT,
+		});
+	};
+
+	// success message
+	const successMessage = () => {
+		toast.success("User Logged In..", {
+			position: toast.POSITION.TOP_RIGHT,
+		});
+	};
+
 	// on submit data
-	async function handleSubmit(e) {
+	function handleSubmit(e) {
 		e.preventDefault();
 		try {
-			const response = await axios.post('http://localhost:7070/login', { email, password });
-			if(response.status === 200) {
-				alert('User Logged in')
-			} else {
-				alert('User not logged in')
-			}
+			fetch("http://localhost:7070/login", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					"Access-Control-Allow-Origin": "*",
+				},
+				body: JSON.stringify({ email, password }),
+			})
+				.then((response) => {
+					if (response.ok) {
+						successMessage();
+					} else {
+						missingInput();
+					}
+				})
+				.catch((error) => {
+					if (error) {
+						missingInput();
+					}
+				});
+			// if (response.ok) {
+			// 	alert("User Logged in");
+			// } else {
+			// 	missingInput();
+			// }
 		} catch (error) {
-			console.log(error.message)
+			console.log(error.message);
 		}
 	}
 
@@ -46,7 +79,7 @@ export default function Login() {
 							onChange={(e) => setPassword(e.target.value)}
 						/>
 					</div>
-					<button type="submit">Register</button>
+					<button type="submit">Login</button>
 					<span>
 						<p>
 							Don't have an account? <Link to={"/register"}>Register</Link> here
