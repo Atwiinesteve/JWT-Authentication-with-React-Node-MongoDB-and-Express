@@ -1,10 +1,13 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import axios from 'axios';
 
 // register component.
 export default function Register() {
+
+	// navigation
+	const navigate = useNavigate();
 
 	// input values
 	const [email, setEmail] = useState("");
@@ -18,11 +21,11 @@ export default function Register() {
 	};
 
 	// user not registered/already registered message
-	const userAlreadyRegistered = () => {
-		toast.warning("User Already Registered", {
-			position: toast.POSITION.TOP_RIGHT
-		});
-	};
+	// const userAlreadyRegistered = () => {
+	// 	toast.warning("User Already Registered", {
+	// 		position: toast.POSITION.TOP_RIGHT
+	// 	});
+	// };
 
 	// server under maintenance mode message
 	const serverUnderMaintenace = () => {
@@ -45,6 +48,7 @@ export default function Register() {
 		await axios.post('http://localhost:7070/register', { email, password })
 		.then((response) => {
 			if(response.status === 200) {
+				navigate('/login')
 				successMessage();
 			}
 		})
@@ -54,7 +58,7 @@ export default function Register() {
 			}
 		})
     } catch (error) {
-		missingInput();
+		serverUnderMaintenace();
     }
   }
 
