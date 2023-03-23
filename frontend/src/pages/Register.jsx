@@ -48,9 +48,9 @@ export default function Register() {
 		await axios.post('http://localhost:7070/register', { email, password })
 		.then((response) => {
 			if(response.status === 200) {
-				navigate('/login')
 				successMessage();
-			}
+			};
+
 		})
     	.catch((error) => {
 			if(error.response.data) {
